@@ -46,8 +46,12 @@ class VerenaDownloader:
         search_id = searchid_url_part.split("=")[-1]
         search_action_id = searchid_url_part.replace("/BiPo/Verena/angebote?action=","").split("&")[0]
         return searchid_url_part, search_id, search_action_id
-    
+
+    def __set_block_size(self, search_id_url):
+        self.session.get(search_id_url)
+
     def __generate_all_listing_urls(self, action_id, search_id, opening_count) -> List[str]:
+        
         """ Based on action_id, search_id and opening_count, generates a list of all listing urls.
         
         Example: https://www.schulministerium.nrw.de/BiPo/Verena/angebote?action=901.7040712715743&seite=a1&suchid=188265
@@ -78,6 +82,8 @@ class VerenaDownloader:
         opening_count, listing_url_part, access_listing_action_id = self.__scrape_landing_page()
         listing_url = self.BASE_URL + listing_url_part
         searchid_url_part, search_id, search_action_id = self.__scrape_listing_page_initial(listing_url)
+        searchid_url = self.BASE_URL + searchid_url_part
+        self.__set_block_size(searchid_url)
         all_listing_urls = self.__generate_all_listing_urls(search_action_id, search_id, opening_count)
         return self.__scrape_actual_listing(all_listing_urls)
         
