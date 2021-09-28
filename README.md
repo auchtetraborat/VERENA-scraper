@@ -1,9 +1,5 @@
 ### Scraper for https://www.schulministerium.nrw.de/BiPo/Verena/online
 
-
-
-Exports to json
-
 ```json
 {
     "school_id": "99999",

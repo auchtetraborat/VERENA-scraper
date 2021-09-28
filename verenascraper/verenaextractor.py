@@ -146,7 +146,7 @@ class VerenaExtractor:
             )
         return result
 
-    def __extract_part5(self, content) -> Tuple[str, str]:
+    def __extract_part5(self, content) -> Tuple[str, str, str]:
         """Returns a tuple of (coord_system : str, coordinates : str, post_adress : str)
 
         Example: ("epsg:25832", "12345, 67890", "Somestreet\n9999 SomeLocation")
@@ -156,18 +156,24 @@ class VerenaExtractor:
         Should be applied to the 5. <div class="ausschreibung_teil"/> in <div class="ausschreibungen"/>
         """
         map_div = content.find("div", {"class": "itnrwMap"})
-        data_itnrw_coords = map_div["data-itnrw-coords"][1:-1].split(";")
-        coord_system = data_itnrw_coords[0]
-        coords = [int(x.strip()) for x in data_itnrw_coords[1].split(",")]
-        name = data_itnrw_coords[2]
-        map_onclick = data_itnrw_coords[3]
-        post_adress = self.map_onclick_regex.sub("", map_onclick)
-        post_adress = post_adress.strip()
-        post_adress = "\n".join(post_adress.split("<br/>"))
-        return coord_system, coords, post_adress
+        data_itnrw_coords = map_div["data-itnrw-coords"]
+        if not data_itnrw_coords:
+            return None, None, None
+        else:
+            data_itnrw_coords = data_itnrw_coords[1:-1].split(";")
+            coord_system = data_itnrw_coords[0]
+            coords = [int(x.strip()) for x in data_itnrw_coords[1].split(",")]
+            name = data_itnrw_coords[2]
+            map_onclick = data_itnrw_coords[3]
+            post_adress = self.map_onclick_regex.sub("", map_onclick)
+            post_adress = post_adress.strip()
+            post_adress = "\n".join(post_adress.split("<br/>"))
+            return coord_system, coords, post_adress
 
     def __format_part5(self, coord_system, coordinates, post_adress) -> dict:
         """Returns a export-ready dict for coord_system, coordinates & postadress"""
+        if coord_system is None and coord_system is None and post_adress is None:
+            return {}
         return {
             "geolocation": {
                 "coord_system": coord_system,
