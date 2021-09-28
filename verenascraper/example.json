@@ -1,10 +1,3 @@
-### Scraper for https://www.schulministerium.nrw.de/BiPo/Verena/online
-
-
-
-Exports to json
-
-```json
 {
     "school_id": "99999",
     "desc": "Eine Schule\nSchule der Sekundarstufe II\ndes Landkreis Schuling\n9999 Schulingen",
@@ -33,4 +26,3 @@ Exports to json
         "post_adress": "Eine Stra\u00dfe 1\n99999 Schulingen"
     }
 }
-```

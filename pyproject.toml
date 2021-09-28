@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "verena-scraper"
+version = "0.1.0"
+description = "Scraping tool for the NRW Job Portal"
+authors = ["auchtetraborat"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.26.0"
+beautifulsoup4 = "^4.9.3"
+lxml = "^4.6.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+black = "^21.8b0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
