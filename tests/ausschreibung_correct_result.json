@@ -6,6 +6,8 @@
         "Fach 1",
         "Fach 2"
     ],
+    "replacement_job_type_raw": "Vertretung für",
+    "replacement_job_type": "Vertretung",
     "comments": "Bemerkung zur Stelle: Testbemerkung",
     "duration": "01.01.2021 - 01.01.2022",
     "hours_per_week": "13,5",

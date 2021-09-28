@@ -26,15 +26,25 @@ class VerenaExtractor:
         for aus in ausschreibungen:
             aus_parts = aus.findAll("div", {"class": "ausschreibung_teil"})
             school_id, desc = self.__extract_part1(aus_parts[0])
-            replacement_job_title, subjects, comments = self.__extract_part2(
-                aus_parts[1]
-            )
+            (
+                replacement_job_type,
+                replacement_job_type_raw,
+                replacement_job_title,
+                subjects,
+                comments,
+            ) = self.__extract_part2(aus_parts[1])
             duration, hours_per_week = self.__extract_part3(aus_parts[2])
             phone, fax, homepage, email, deadline = self.__extract_part4(aus_parts[3])
             coord_system, coordinates, post_adress = self.__extract_part5(aus_parts[4])
             merged = {
                 **self.__format_part1(school_id, desc),
-                **self.__format_part2(replacement_job_title, subjects, comments),
+                **self.__format_part2(
+                    replacement_job_type,
+                    replacement_job_type_raw,
+                    replacement_job_title,
+                    subjects,
+                    comments,
+                ),
                 **self.__format_part3(duration, hours_per_week),
                 **self.__format_part4(phone, fax, homepage, email, deadline),
                 **self.__format_part5(coord_system, coordinates, post_adress),
@@ -63,7 +73,7 @@ class VerenaExtractor:
 
     def __extract_part2(self, content):
         # TODO add typing to return value when 3.10 is realeased
-        """Returns a tuple of (replacement_job_title : str, subjects : List[str], comments : str | None)
+        """Returns a tuple of (replacement_job_type: str, replacement_job_type_raw: str, replacement_job_title : str, subjects : List[str], comments : str | None, )
 
         Should be applied to the 2. <div class="ausschreibung_teil"/> in <div class="ausschreibungen"/>
         """
@@ -75,13 +85,38 @@ class VerenaExtractor:
             comments_or_empty = content.contents[-1].strip()
             if comments_or_empty:
                 comments = comments_or_empty
-        return replacement_job_title, subjects, comments
+        replacement_job_type_raw = content.contents[0].strip()
+        replacement_job_type = None
+        if "AnC" in replacement_job_type_raw:
+            replacement_job_type = "Aufholen nach Corona"
+        elif "Vertretung" in replacement_job_type_raw:
+            replacement_job_type = "Vertretung"
+        return (
+            replacement_job_type,
+            replacement_job_type_raw,
+            replacement_job_title,
+            subjects,
+            comments,
+        )
 
-    def __format_part2(self, replacement_job_title, subjects, comments) -> dict:
-        """Returns a export-ready dict for replacement_job_title, subjects, comments"""
-        res = {"replacement_job_title": replacement_job_title, "subjects": subjects}
+    def __format_part2(
+        self,
+        replacement_job_type,
+        replacement_job_type_raw,
+        replacement_job_title,
+        subjects,
+        comments,
+    ) -> dict:
+        """Returns a export-ready dict for replacement_job_type, replacement_job_type_raw, replacement_job_title, subjects, comments"""
+        res = {
+            "replacement_job_type_raw": replacement_job_type_raw,
+            "replacement_job_title": replacement_job_title,
+            "subjects": subjects,
+        }
         if comments:
             res["comments"] = comments
+        if replacement_job_type:
+            res["replacement_job_type"] = replacement_job_type
         return res
 
     def __extract_part3(self, content):

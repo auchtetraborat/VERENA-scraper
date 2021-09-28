@@ -1,5 +1,6 @@
-from .verenadownloader import VerenaDownloader
-from .verenaextractor import VerenaExtractor
+from verenascraper.verenadownloader import VerenaDownloader
+from verenascraper.verenaextractor import VerenaExtractor
+import json
 
 
 class VerenaScraper:
@@ -24,4 +25,4 @@ class VerenaScraper:
 if __name__ == "__main__":
     vs = VerenaScraper()
     res = vs.get()
-    print(res)
+    print(json.dumps(res))
