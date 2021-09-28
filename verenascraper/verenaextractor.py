@@ -7,9 +7,9 @@ class VerenaExtractor:
     """
     Extracts the job listings objects from the search result website of the VERENA portal.
     """
-    
+
     def __init__(self, source: str):
-        """ 
+        """
         Init with string containing the sourcecode the website (for example from request.text)
         """
         self.soup = BeautifulSoup(source, "html.parser")

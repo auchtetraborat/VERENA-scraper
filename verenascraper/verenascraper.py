@@ -6,10 +6,11 @@ class VerenaScraper:
     """
     Downloads and extracts the current job listings from the VERENA portal.
     """
+
     def get():
         """
         Downloads and extracts the current job listings from the VERENA portal.
-        
+
         Example: [
             {
                 "school_id": "99999",
@@ -49,6 +50,7 @@ class VerenaScraper:
             extract = VerenaExtractor(page).extract()
             result = result + extract
         return result
+
 
 if __name__ == "__main__":
     vs = VerenaScraper()

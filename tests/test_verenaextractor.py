@@ -1,7 +1,7 @@
-from verenascraper.verenadownloader import VerenaDownloader
 import pytest
 import json
 from verenascraper.verenaextractor import VerenaExtractor
+
 
 def test_extractor_content():
     with open("tests/ausschreibung_test_input.html", "r") as f:
@@ -18,5 +18,3 @@ def test_extractor_simple_10():
         ve = VerenaExtractor(content)
         res = ve.extract()
         assert len(res) == 10
-
-
