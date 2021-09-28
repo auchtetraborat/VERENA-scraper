@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "verena-scraper"
+name = "verenascraper"
 version = "0.1.0"
 description = "Scraping tool for the NRW Job Portal"
 authors = ["auchtetraborat"]
